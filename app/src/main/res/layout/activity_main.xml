@@ -28,8 +28,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:ems="10"
-                    android:id="@+id/longitude"
-                    android:hint="Długość"
+                    android:id="@+id/latitude"
+                    android:hint="Szerokość"
                     android:layout_weight="1" />
 
                 <EditText
@@ -37,8 +37,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:ems="10"
-                    android:id="@+id/latitiude"
-                    android:hint="Szerokość"
+                    android:id="@+id/longitude"
+                    android:hint="Długość"
                     android:layout_weight="1" />
             </LinearLayout>
 
