@@ -28,7 +28,7 @@ public class MapThumbnailResponse {
         }
 
         public void setThumbnail(String thumbnail) {
-                thumbnail = thumbnail;
+                this.thumbnail = thumbnail;
         }
 
         public String getMapName() {
@@ -36,7 +36,7 @@ public class MapThumbnailResponse {
         }
 
         public void setMapName(String mapName) {
-                mapName = mapName;
+                this.mapName = mapName;
         }
 
         public double getLatitudeMin() {
@@ -44,7 +44,7 @@ public class MapThumbnailResponse {
         }
 
         public void setLatitudeMin(double latitudeMin) {
-                latitudeMin = latitudeMin;
+                this.latitudeMin = latitudeMin;
         }
 
         public double getLatitudeMax() {
@@ -52,7 +52,7 @@ public class MapThumbnailResponse {
         }
 
         public void setLatitudeMax(double latitudeMax) {
-                latitudeMax = latitudeMax;
+                this.latitudeMax = latitudeMax;
         }
 
         public double getLongitudeMin() {
@@ -60,7 +60,7 @@ public class MapThumbnailResponse {
         }
 
         public void setLongitudeMin(double longitudeMin) {
-                longitudeMin = longitudeMin;
+                this.longitudeMin = longitudeMin;
         }
 
         public double getLongitudeMax() {
@@ -68,6 +68,6 @@ public class MapThumbnailResponse {
         }
 
         public void setLongitudeMax(double longitudeMax) {
-               longitudeMax = longitudeMax;
+               this.longitudeMax = longitudeMax;
         }
 }

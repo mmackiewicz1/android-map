@@ -2,14 +2,12 @@ package com.android_map.androidmap.tasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.util.Log;
 import android.widget.ImageView;
 
-import com.android_map.androidmap.models.MapThumbnailResponse;
+import com.android_map.androidmap.models.MapDetailResponse;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -18,26 +16,35 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.net.URL;
 
-public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, MapThumbnailResponse> {
+public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, MapDetailResponse> {
     private static final String NAMESPACE = "http://stm.eti.gda.pl/stm";
-    private static final String METHOD_NAME = "GetMapThumbnail";
-    private static final String SOAP_ACTION = "http://stm.eti.gda.pl/stm/IMapService/GetMapThumbnail";
+    private static final String METHOD_NAME = "GetDetailedMapByPixelLocation";
+    private static final String SOAP_ACTION = "http://stm.eti.gda.pl/stm/IMapService/GetDetailedMapByPixelLocation";
     private static final String URL = "http://10.0.2.2:4321/mapservice";
 
+    private int latitude;
+    private int longitude;
     private ImageView imageView;
     private ProgressDialog dialog;
 
-    public MapThumbnailRequestTask(ImageView imageView, Activity activity) {
+    public MapFragmentRequestTask(ImageView imageView, int latitude, int longitude, Activity activity) {
         this.imageView = imageView;
+        this.latitude = latitude;
+        this.longitude = longitude;
         dialog = new ProgressDialog(activity);
     }
 
     @Override
-    protected MapThumbnailResponse doInBackground(URL... params) {
+    protected MapDetailResponse doInBackground(URL... params) {
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-        request.addProperty("mapName", "radom");
 
+        request.addProperty("mapName", "radom");
+        request.addProperty("x1", latitude);
+        request.addProperty("y1", longitude);
+        request.addProperty("x2", latitude + 100);
+        request.addProperty("y2", longitude + 100);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
+
         envelope.dotNet = true;
         envelope.setOutputSoapObject(request);
 
@@ -64,24 +71,20 @@ public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, MapThumbnai
     }
 
     @Override
-    protected void onPostExecute(MapThumbnailResponse result) {
+    protected void onPostExecute(MapDetailResponse result) {
         super.onPostExecute(result);
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
 
-        byte[] decodedString = Base64.decode(result.getThumbnail(), Base64.DEFAULT);
+        byte[] decodedString = Base64.decode(result.getDetailedImage(), Base64.DEFAULT);
         imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
     }
 
-    private MapThumbnailResponse parseResponse(SoapObject soapObject) {
-        return new MapThumbnailResponse(
-                soapObject.getProperty("Thumbnail").toString(),
+    private MapDetailResponse parseResponse(SoapObject soapObject) {
+        return new MapDetailResponse(
                 soapObject.getProperty("MapName").toString(),
-                Double.parseDouble(soapObject.getProperty("LatitudeMin").toString()),
-                Double.parseDouble(soapObject.getProperty("LatitudeMax").toString()),
-                Double.parseDouble(soapObject.getProperty("LongitudeMin").toString()),
-                Double.parseDouble(soapObject.getProperty("LongitudeMax").toString())
+                soapObject.getProperty("DetailedImage").toString()
         );
     }
 }
