@@ -65,7 +65,7 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
     }
 
     protected void onPreExecute() {
-        dialog.setMessage("Ładowanie mapy.");
+        dialog.setMessage("Ładowanie fragmentu mapy.");
         dialog.setIndeterminate(true);
         dialog.show();
     }
