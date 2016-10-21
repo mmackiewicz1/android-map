@@ -9,6 +9,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.android_map.androidmap.models.MapThumbnailResponse;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -16,7 +18,7 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.net.URL;
 
-public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, Bitmap> {
+public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, MapThumbnailResponse> {
     private static final String NAMESPACE = "http://stm.eti.gda.pl/stm";
     private static final String METHOD_NAME = "GetMapThumbnail";
     private static final String SOAP_ACTION = "http://stm.eti.gda.pl/stm/IMapService/GetMapThumbnail";
@@ -31,7 +33,7 @@ public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, Bitmap> {
     }
 
     @Override
-    protected Bitmap doInBackground(URL... params) {
+    protected MapThumbnailResponse doInBackground(URL... params) {
         Log.i("Tag", "Starting background task");
 
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -50,11 +52,8 @@ public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, Bitmap> {
 
         try {
             androidHttpTransport.call(SOAP_ACTION, envelope);
-            SoapObject response = (SoapObject)envelope.getResponse();
 
-            byte[] decodedString = Base64.decode(response.getProperty("Thumbnail").toString(), Base64.DEFAULT);
-
-            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            return parseResponse((SoapObject)envelope.getResponse());
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -69,12 +68,24 @@ public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, Bitmap> {
     }
 
     @Override
-    protected void onPostExecute(Bitmap result) {
+    protected void onPostExecute(MapThumbnailResponse result) {
         super.onPostExecute(result);
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
 
-        imageView.setImageBitmap(result);
+        byte[] decodedString = Base64.decode(result.getThumbnail(), Base64.DEFAULT);
+        imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+    }
+
+    private MapThumbnailResponse parseResponse(SoapObject soapObject) {
+        return new MapThumbnailResponse(
+                soapObject.getProperty("Thumbnail").toString(),
+                soapObject.getProperty("MapName").toString(),
+                Double.parseDouble(soapObject.getProperty("LatitudeMin").toString()),
+                Double.parseDouble(soapObject.getProperty("LatitudeMax").toString()),
+                Double.parseDouble(soapObject.getProperty("LongitudeMin").toString()),
+                Double.parseDouble(soapObject.getProperty("LongitudeMax").toString())
+        );
     }
 }

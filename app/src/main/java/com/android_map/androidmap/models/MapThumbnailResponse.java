@@ -1,58 +1,73 @@
 package com.android_map.androidmap.models;
 
 public class MapThumbnailResponse {
-        public String Thumbnail;
-        public String MapName;
-        public double LatitudeMin;
-        public double LatitudeMax;
-        public double LongitudeMin;
-        public double LongitudeMax;
+        private String thumbnail;
+        private String mapName;
+        private double latitudeMin;
+        private double latitudeMax;
+        private double longitudeMin;
+        private double longitudeMax;
+
+        public MapThumbnailResponse(
+                        String thumbnail,
+                        String mapName,
+                        double latitudeMin,
+                        double latitudeMax,
+                        double longitudeMin,
+                        double longitudeMax) {
+                this.thumbnail = thumbnail;
+                this.mapName = mapName;
+                this.latitudeMin = latitudeMin;
+                this.latitudeMax = latitudeMax;
+                this.longitudeMin = longitudeMin;
+                this.longitudeMax = longitudeMax;
+        }
 
         public String getThumbnail() {
-                return Thumbnail;
+                return thumbnail;
         }
 
         public void setThumbnail(String thumbnail) {
-                Thumbnail = thumbnail;
+                thumbnail = thumbnail;
         }
 
         public String getMapName() {
-                return MapName;
+                return mapName;
         }
 
         public void setMapName(String mapName) {
-                MapName = mapName;
+                mapName = mapName;
         }
 
         public double getLatitudeMin() {
-                return LatitudeMin;
+                return latitudeMin;
         }
 
         public void setLatitudeMin(double latitudeMin) {
-                LatitudeMin = latitudeMin;
+                latitudeMin = latitudeMin;
         }
 
         public double getLatitudeMax() {
-                return LatitudeMax;
+                return latitudeMax;
         }
 
         public void setLatitudeMax(double latitudeMax) {
-                LatitudeMax = latitudeMax;
+                latitudeMax = latitudeMax;
         }
 
         public double getLongitudeMin() {
-                return LongitudeMin;
+                return longitudeMin;
         }
 
         public void setLongitudeMin(double longitudeMin) {
-                LongitudeMin = longitudeMin;
+                longitudeMin = longitudeMin;
         }
 
         public double getLongitudeMax() {
-                return LongitudeMax;
+                return longitudeMax;
         }
 
         public void setLongitudeMax(double longitudeMax) {
-                LongitudeMax = longitudeMax;
+               longitudeMax = longitudeMax;
         }
 }
