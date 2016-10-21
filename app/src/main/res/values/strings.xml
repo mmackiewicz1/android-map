@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Aplikacja wczytująca mapę</string>
     <string name="map_fragment">Fragment mapy</string>
+    <string name="title_activity_main_map_view">MainMapViewActivity</string>
 </resources>

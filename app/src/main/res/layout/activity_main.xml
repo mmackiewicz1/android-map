@@ -11,53 +11,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.android_map.androidmap.MainActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:ems="10"
-                    android:id="@+id/latitude"
-                    android:hint="Szerokość"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:ems="10"
-                    android:id="@+id/longitude"
-                    android:hint="Długość"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Pobierz fragment"
-                android:id="@+id/button" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/thumbnailView"
-                android:layout_alignParentTop="true"
-                android:adjustViewBounds="true"
-                android:clickable="true"
-                android:onClick="displayMapFragment" />
-        </LinearLayout>
-    </ScrollView>
+    <Button
+        android:text="Start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/startButton"
+        android:textSize="10pt"
+        android:padding="10pt"
+        android:background="@android:color/black"
+        android:textColor="@android:color/white"
+        android:onClick="goToMapView"/>
 </RelativeLayout>

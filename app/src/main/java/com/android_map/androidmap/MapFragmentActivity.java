@@ -1,15 +1,11 @@
 package com.android_map.androidmap;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.ImageView;
 
-public class DisplayMapFragmentActivity extends AppCompatActivity {
+public class MapFragmentActivity extends AppCompatActivity {
     private static final String LATITUDE = "latitude";
     private static final String LONGITUDE = "longitude";
 

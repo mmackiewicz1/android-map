@@ -1,9 +1,13 @@
-package com.android_map.androidmap;
+package com.android_map.androidmap.tasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -12,20 +16,22 @@ import org.ksoap2.transport.HttpTransportSE;
 
 import java.net.URL;
 
-public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, String> {
+public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, Bitmap> {
     private static final String NAMESPACE = "http://stm.eti.gda.pl/stm";
     private static final String METHOD_NAME = "GetMapThumbnail";
     private static final String SOAP_ACTION = "http://stm.eti.gda.pl/stm/IMapService/GetMapThumbnail";
     private static final String URL = "http://10.0.2.2:4321/mapservice";
 
+    private ImageView imageView;
     private ProgressDialog dialog;
 
-    public MapThumbnailRequestTask(Activity activity) {
+    public MapThumbnailRequestTask(ImageView imageView, Activity activity) {
+        this.imageView = imageView;
         dialog = new ProgressDialog(activity);
     }
 
     @Override
-    protected String doInBackground(URL... params) {
+    protected Bitmap doInBackground(URL... params) {
         Log.i("Tag", "Starting background task");
 
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
@@ -46,24 +52,29 @@ public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, String> {
             androidHttpTransport.call(SOAP_ACTION, envelope);
             SoapObject response = (SoapObject)envelope.getResponse();
 
-            return response.getProperty("Thumbnail").toString();
+            byte[] decodedString = Base64.decode(response.getProperty("Thumbnail").toString(), Base64.DEFAULT);
+
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         } catch(Exception e) {
             e.printStackTrace();
         }
 
-        return "";
+        return null;
     }
 
     protected void onPreExecute() {
-        this.dialog.setMessage("Proszę czekać.");
-        this.dialog.show();
+        dialog.setMessage("Ładowanie mapy.");
+        dialog.setIndeterminate(true);
+        dialog.show();
     }
 
     @Override
-    protected void onPostExecute(String mapData) {
-        super.onPostExecute(mapData);
+    protected void onPostExecute(Bitmap result) {
+        super.onPostExecute(result);
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
+
+        imageView.setImageBitmap(result);
     }
 }
