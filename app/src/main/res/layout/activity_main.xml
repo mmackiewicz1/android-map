@@ -93,18 +93,18 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Pobierz fragment"
-                android:id="@+id/button"
+                android:id="@+id/getByCoordinatesButton"
                 android:textAlignment="center"
-                android:onClick="displayMapFragment"/>
+                android:onClick="displayMapFragmentByCoordinates"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <Button
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/thumbnailView"
-                android:layout_alignParentTop="true"
-                android:adjustViewBounds="true"
-                android:clickable="true" />
+                android:layout_centerInParent="true"
+                android:text="Pokaż mapę"
+                android:id="@+id/getThumbnailButton"
+                android:textAlignment="center"
+                android:onClick="displayMapThumbnail"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MapFragmentActivity" />
+        <activity android:name=".MapThumbnailActivity"></activity>
     </application>
 
 </manifest>

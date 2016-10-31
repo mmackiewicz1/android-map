@@ -21,7 +21,6 @@ public class MarshalDouble implements Marshal {
 
     public void register(SoapSerializationEnvelope cm) {
         cm.addMapping(cm.xsd, "double", Double.class, this);
-
     }
 
     @Override
