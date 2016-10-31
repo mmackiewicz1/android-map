@@ -22,7 +22,7 @@ public class MapThumbnailRequestTask extends AsyncTask<URL, Integer, MapThumbnai
     private static final String NAMESPACE = "http://stm.eti.gda.pl/stm";
     private static final String METHOD_NAME = "GetMapThumbnail";
     private static final String SOAP_ACTION = "http://stm.eti.gda.pl/stm/IMapService/GetMapThumbnail";
-    private static final String URL = "http://10.0.2.2:4321/mapservice";
+    private static final String URL = "http://10.0.2.2:4321/MapService";
 
     private ImageView imageView;
     private ProgressDialog dialog;

@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.widget.ImageView;
+import org.ksoap2.serialization.Marshal;
 
+import com.android_map.androidmap.helpers.MarshalDouble;
 import com.android_map.androidmap.models.MapDetailResponse;
 
 import org.ksoap2.SoapEnvelope;
@@ -18,19 +20,23 @@ import java.net.URL;
 
 public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, MapDetailResponse> {
     private static final String NAMESPACE = "http://stm.eti.gda.pl/stm";
-    private static final String METHOD_NAME = "GetDetailedMapByPixelLocation";
-    private static final String SOAP_ACTION = "http://stm.eti.gda.pl/stm/IMapService/GetDetailedMapByPixelLocation";
-    private static final String URL = "http://10.0.2.2:4321/mapservice";
+    private static final String METHOD_NAME = "GetDetailedMapByCoordinates";
+    private static final String SOAP_ACTION = "http://stm.eti.gda.pl/stm/IMapService/GetDetailedMapByCoordinates";
+    private static final String URL = "http://10.0.2.2:4321/MapService";
 
-    private int latitude;
-    private int longitude;
+    private double latitude1;
+    private double longitude1;
+    private double latitude2;
+    private double longitude2;
     private ImageView imageView;
     private ProgressDialog dialog;
 
-    public MapFragmentRequestTask(ImageView imageView, int latitude, int longitude, Activity activity) {
+    public MapFragmentRequestTask(ImageView imageView, double latitude1, double longitude1, double latitude2, double longitude2, Activity activity) {
         this.imageView = imageView;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude1 = latitude1;
+        this.longitude1 = longitude1;
+        this.latitude2 = latitude2;
+        this.longitude2 = longitude2;
         dialog = new ProgressDialog(activity);
     }
 
@@ -39,22 +45,21 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
 
         request.addProperty("mapName", "radom");
-        request.addProperty("x1", latitude);
-        request.addProperty("y1", longitude);
-        request.addProperty("x2", latitude + 100);
-        request.addProperty("y2", longitude + 100);
+        request.addProperty("latitude1", latitude1);
+        request.addProperty("longitude1", longitude1);
+        request.addProperty("latitude2", latitude2);
+        request.addProperty("longitude2", longitude2);
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
 
         envelope.dotNet = true;
         envelope.setOutputSoapObject(request);
+        new MarshalDouble().register(envelope);
 
         HttpTransportSE httpTransportSE =  new HttpTransportSE(URL);
         httpTransportSE.debug = true;
 
-        HttpTransportSE androidHttpTransport = httpTransportSE;
-
         try {
-            androidHttpTransport.call(SOAP_ACTION, envelope);
+            httpTransportSE.call(SOAP_ACTION, envelope);
 
             return parseResponse((SoapObject)envelope.getResponse());
         } catch(Exception e) {

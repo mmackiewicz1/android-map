@@ -3,8 +3,6 @@ package com.android_map.androidmap;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.android_map.androidmap.tasks.MapFragmentRequestTask;
@@ -12,10 +10,10 @@ import com.android_map.androidmap.tasks.MapFragmentRequestTask;
 import java.util.concurrent.ExecutionException;
 
 public class MapFragmentActivity extends AppCompatActivity {
-    private static final String LATITUDE = "latitude";
-    private static final String LONGITUDE = "longitude";
-
-    private ImageView imageView;
+    private static final String LATITUDE_1 = "latitude1";
+    private static final String LONGITUDE_1 = "longitude1";
+    private static final String LATITUDE_2 = "latitude2";
+    private static final String LONGITUDE_2 = "longitude2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +23,17 @@ public class MapFragmentActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         try {
-            downloadMapDetailedView(intent.getIntExtra(LATITUDE, 0), intent.getIntExtra(LONGITUDE, 0));
+            downloadMapDetailedView(
+                    intent.getDoubleExtra(LATITUDE_1, 0f),
+                    intent.getDoubleExtra(LONGITUDE_1, 0f),
+                    intent.getDoubleExtra(LATITUDE_2, 0f),
+                    intent.getDoubleExtra(LONGITUDE_2, 0f));
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
-    private void downloadMapDetailedView(int x, int y) throws ExecutionException, InterruptedException {
-        imageView = (ImageView) findViewById(R.id.mapFragment);
-        new MapFragmentRequestTask(imageView, x, y, this).execute();
+    private void downloadMapDetailedView(double latitude1, double longitude1, double latitude2, double longitude2) throws ExecutionException, InterruptedException {
+        new MapFragmentRequestTask((ImageView) findViewById(R.id.mapFragment), latitude1, longitude1, latitude2, longitude2, this).execute();
     }
 }
