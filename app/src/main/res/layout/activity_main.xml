@@ -9,7 +9,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.android_map.androidmap.MainActivity">
+    tools:context="com.android_map.androidmap.MainActivity"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -101,10 +103,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Pokaż mapę"
+                android:text="Pokaż klikalną mapę"
                 android:id="@+id/getThumbnailButton"
                 android:textAlignment="center"
-                android:onClick="displayMapThumbnail"/>
+                android:onClick="displayMapThumbnail"
+                android:layout_marginTop="50pt"
+                android:backgroundTint="#90EE90" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

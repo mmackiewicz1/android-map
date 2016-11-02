@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.widget.ImageView;
-import org.ksoap2.serialization.Marshal;
 
 import com.android_map.androidmap.helpers.MarshalDouble;
 import com.android_map.androidmap.models.MapDetailResponse;

@@ -50,7 +50,7 @@ public class MapFragmentActivity extends AppCompatActivity {
         new MapFragmentRequestTask((ImageView) findViewById(R.id.mapFragment), latitude1, longitude1, latitude2, longitude2, this).execute();
     }
 
-    private void downloadMapDetailedViewByPixelLocation(int latitude1, int longitude1, int latitude2, int longitude2) throws ExecutionException, InterruptedException {
+    private void downloadMapDetailedViewByPixelLocation(int latitude1, int longitude1, int latitude2, int longitude2) {
         new MapFragmentRequestTask((ImageView) findViewById(R.id.mapFragment), latitude1, longitude1, latitude2, longitude2, this).execute();
     }
 }
