@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 || longitude2.getText().toString().isEmpty()) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setMessage("Proszę uzupełnij wszystkie pola");
-            alert.setPositiveButton("OK",null);
+            alert.setPositiveButton("OK", null);
             alert.show();
 
             return false;

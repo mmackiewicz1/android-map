@@ -1,5 +1,8 @@
 package com.android_map.androidmap.tasks;
 
+import static com.android_map.androidmap.utils.SoapParameters.NAMESPACE;
+import static com.android_map.androidmap.utils.SoapParameters.URL;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.BitmapFactory;
@@ -20,9 +23,6 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.net.URL;
 
 public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, MapDetailResponse> {
-    private static final String NAMESPACE = "http://stm.eti.gda.pl/stm";
-    private static final String URL = "http://10.0.2.2:4321/MapService";
-
     private String methodName = "GetDetailedMapByCoordinates";
     private String soapAction = "http://stm.eti.gda.pl/stm/IMapService/GetDetailedMapByCoordinates";
     private RegularCoordinates regularCoordinates;
@@ -103,8 +103,10 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
             dialog.dismiss();
         }
 
-        byte[] decodedString = Base64.decode(result.getDetailedImage(), Base64.DEFAULT);
-        imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+        if (result != null) {
+            byte[] decodedString = Base64.decode(result.getDetailedImage(), Base64.DEFAULT);
+            imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+        }
     }
 
     private MapDetailResponse parseResponse(SoapObject soapObject) {

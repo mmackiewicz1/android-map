@@ -1,5 +1,8 @@
 package com.android_map.androidmap.tasks;
 
+import static com.android_map.androidmap.utils.SoapParameters.NAMESPACE;
+import static com.android_map.androidmap.utils.SoapParameters.URL;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -14,8 +17,6 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.net.URL;
 
 public class MapCoordinatesBoundsRequestTask extends AsyncTask<java.net.URL, Integer, CoordinatesBoundsResponse> {
-    private static final String NAMESPACE = "http://stm.eti.gda.pl/stm";
-    private static final String URL = "http://10.0.2.2:4321/MapService";
     private static final String METHOD_NAME = "GetCoordinatesBounds";
     private static final String SOAP_ACTION = "http://stm.eti.gda.pl/stm/IMapService/GetCoordinatesBounds";
 
