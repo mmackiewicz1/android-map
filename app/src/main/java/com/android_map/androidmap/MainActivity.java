@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MapFragmentActivity.class);
 
             assignExtras(intent);
-
             startActivity(intent);
         }
     }

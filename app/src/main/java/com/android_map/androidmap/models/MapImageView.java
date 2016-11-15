@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 public class MapImageView extends ImageView {
     private Paint currentPaint;
-    public boolean drawRect = false;
+    public boolean drawRect = true;
     public int left;
     public int top;
     public int right;

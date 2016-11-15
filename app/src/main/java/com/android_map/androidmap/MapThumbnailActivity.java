@@ -41,10 +41,19 @@ public class MapThumbnailActivity extends AppCompatActivity {
     }
 
     public void displayMapFragmentByPixelLocation(int latitude1, int longitude1, int latitude2, int longitude2) {
-        Intent intent = new Intent(
-                this,
-                MapFragmentActivity.class
-        );
+        Intent intent = new Intent(this, MapFragmentActivity.class);
+
+        if (latitude1 < latitude2) {
+            int temp = latitude1;
+            latitude1 = latitude2;
+            latitude2 = temp;
+        }
+
+        if (longitude1 > longitude2) {
+            int temp = longitude1;
+            longitude1 = longitude2;
+            longitude2 = temp;
+        }
 
         intent.putExtra(LATITUDE_1, latitude1);
         intent.putExtra(LONGITUDE_1, longitude1);
@@ -58,23 +67,16 @@ public class MapThumbnailActivity extends AppCompatActivity {
     private View.OnTouchListener imgSourceOnTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
-            MapImageView drawView = (MapImageView) view;
+            MapImageView mapView = (MapImageView) view;
+            mapView.right = (int)event.getX();
+            mapView.bottom = (int)event.getY();
+            mapView.invalidate();
+
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                drawView.left = (int)event.getX();
-                drawView.top = (int)event.getY();
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                drawView.right = (int)event.getX();
-                drawView.bottom = (int)event.getY();
+                mapView.left = (int)event.getX();
+                mapView.top = (int)event.getY();
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                drawView.invalidate();
-                drawView.drawRect = true;
-
-                Log.i("tag", String.valueOf(drawView.left) + ", " +
-                        String.valueOf(drawView.top) + ", " +
-                        String.valueOf(drawView.right) + ", " +
-                        String.valueOf((drawView.bottom)));
-
-                displayMapFragmentByPixelLocation(drawView.left, drawView.top, drawView.right, drawView.bottom);
+                displayMapFragmentByPixelLocation(mapView.left, mapView.top, mapView.right, mapView.bottom);
             }
 
             return true;
