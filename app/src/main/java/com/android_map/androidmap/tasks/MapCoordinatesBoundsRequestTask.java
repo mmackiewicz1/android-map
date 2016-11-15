@@ -1,7 +1,12 @@
 package com.android_map.androidmap.tasks;
 
-import static com.android_map.androidmap.utils.SoapParameters.NAMESPACE;
-import static com.android_map.androidmap.utils.SoapParameters.URL;
+import static com.android_map.androidmap.utils.SoapAPIParameters.NAMESPACE;
+import static com.android_map.androidmap.utils.SoapAPIParameters.URL;
+import static com.android_map.androidmap.utils.SoapRequestProperties.REQUEST_MAP_NAME;
+import static com.android_map.androidmap.utils.SoapResponseProperties.LATITUDE_MAX;
+import static com.android_map.androidmap.utils.SoapResponseProperties.LATITUDE_MIN;
+import static com.android_map.androidmap.utils.SoapResponseProperties.LONGITUDE_MAX;
+import static com.android_map.androidmap.utils.SoapResponseProperties.LONGITUDE_MIN;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -29,7 +34,7 @@ public class MapCoordinatesBoundsRequestTask extends AsyncTask<java.net.URL, Int
     @Override
     protected CoordinatesBoundsResponse doInBackground(URL... params) {
         SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-        request.addProperty("mapName", "radom");
+        request.addProperty(REQUEST_MAP_NAME, "radom");
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
         envelope.dotNet = true;
@@ -67,10 +72,10 @@ public class MapCoordinatesBoundsRequestTask extends AsyncTask<java.net.URL, Int
 
     private CoordinatesBoundsResponse parseResponse(SoapObject soapObject) {
         return new CoordinatesBoundsResponse(
-                Double.parseDouble(soapObject.getProperty("LatitudeMin").toString()),
-                Double.parseDouble(soapObject.getProperty("LatitudeMax").toString()),
-                Double.parseDouble(soapObject.getProperty("LongitudeMin").toString()),
-                Double.parseDouble(soapObject.getProperty("LongitudeMax").toString())
+                Double.parseDouble(soapObject.getProperty(LATITUDE_MIN).toString()),
+                Double.parseDouble(soapObject.getProperty(LATITUDE_MAX).toString()),
+                Double.parseDouble(soapObject.getProperty(LONGITUDE_MIN).toString()),
+                Double.parseDouble(soapObject.getProperty(LONGITUDE_MAX).toString())
         );
     }
 }

@@ -1,13 +1,16 @@
 package com.android_map.androidmap;
 
+import static com.android_map.androidmap.utils.SoapRequestProperties.LATITUDE_ONE;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LATITUDE_TWO;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LONGITUDE_ONE;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LONGITUDE_TWO;
+
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -17,10 +20,6 @@ import com.android_map.androidmap.tasks.MapCoordinatesBoundsRequestTask;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String LATITUDE_1 = "latitude1";
-    private static final String LONGITUDE_1 = "longitude1";
-    private static final String LATITUDE_2 = "latitude2";
-    private static final String LONGITUDE_2 = "longitude2";
     private static final String COORDINATES_PRESENT = "coordinatesPresent";
 
     private CoordinatesBoundsResponse coordinatesBoundsResponse;
@@ -32,26 +31,16 @@ public class MainActivity extends AppCompatActivity {
                 (EditText) findViewById(R.id.latitude2),
                 (EditText) findViewById(R.id.longitude2))) {
 
-            Intent intent = new Intent(
-                    this,
-                    MapFragmentActivity.class
-            );
+            Intent intent = new Intent(this, MapFragmentActivity.class);
 
-            intent.putExtra(LATITUDE_1, Double.parseDouble(((EditText) findViewById(R.id.latitude1)).getText().toString()));
-            intent.putExtra(LATITUDE_2, Double.parseDouble(((EditText) findViewById(R.id.latitude2)).getText().toString()));
-            intent.putExtra(LONGITUDE_1, Double.parseDouble(((EditText) findViewById(R.id.longitude1)).getText().toString()));
-            intent.putExtra(LONGITUDE_2, Double.parseDouble(((EditText) findViewById(R.id.longitude2)).getText().toString()));
-            intent.putExtra(COORDINATES_PRESENT, true);
+            assignExtras(intent);
 
             startActivity(intent);
         }
     }
 
     public void displayMapThumbnail(View view) {
-        Intent intent = new Intent(
-                this,
-                MapThumbnailActivity.class
-        );
+        Intent intent = new Intent(this, MapThumbnailActivity.class);
 
         startActivity(intent);
     }
@@ -83,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 || latitude2.getText().toString().isEmpty()
                 || longitude2.getText().toString().isEmpty()) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setMessage("Proszę uzupełnij wszystkie pola");
+            alert.setMessage("Proszę, uzupełnij wszystkie pola");
             alert.setPositiveButton("OK", null);
             alert.show();
 
@@ -131,8 +120,29 @@ public class MainActivity extends AppCompatActivity {
         return isValidated;
     }
 
-    public void hideSoftKeyboard(View view){
-        InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    private void assignExtras(Intent intent) {
+        double latitude1 = Double.parseDouble(((EditText) findViewById(R.id.latitude1)).getText().toString());
+        double latitude2 = Double.parseDouble(((EditText) findViewById(R.id.latitude2)).getText().toString());
+
+        if (latitude1 < latitude2) {
+            double temp = latitude1;
+            latitude1 = latitude2;
+            latitude2 = temp;
+        }
+
+        double longitude1 = Double.parseDouble(((EditText) findViewById(R.id.longitude1)).getText().toString());
+        double longitude2 = Double.parseDouble(((EditText) findViewById(R.id.longitude2)).getText().toString());
+
+        if (longitude1 > longitude2) {
+            double temp = longitude1;
+            longitude1 = longitude2;
+            longitude2 = temp;
+        }
+
+        intent.putExtra(LATITUDE_ONE, latitude1);
+        intent.putExtra(LATITUDE_TWO, latitude2);
+        intent.putExtra(LONGITUDE_ONE, longitude1);
+        intent.putExtra(LONGITUDE_TWO, longitude2);
+        intent.putExtra(COORDINATES_PRESENT, true);
     }
 }

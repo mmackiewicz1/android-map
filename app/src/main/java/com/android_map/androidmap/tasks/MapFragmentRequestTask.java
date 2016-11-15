@@ -1,7 +1,18 @@
 package com.android_map.androidmap.tasks;
 
-import static com.android_map.androidmap.utils.SoapParameters.NAMESPACE;
-import static com.android_map.androidmap.utils.SoapParameters.URL;
+import static com.android_map.androidmap.utils.SoapAPIParameters.NAMESPACE;
+import static com.android_map.androidmap.utils.SoapAPIParameters.URL;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LATITUDE_ONE;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LATITUDE_TWO;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LONGITUDE_ONE;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LONGITUDE_TWO;
+import static com.android_map.androidmap.utils.SoapRequestProperties.REQUEST_MAP_NAME;
+import static com.android_map.androidmap.utils.SoapRequestProperties.X_ONE;
+import static com.android_map.androidmap.utils.SoapRequestProperties.X_TWO;
+import static com.android_map.androidmap.utils.SoapRequestProperties.Y_ONE;
+import static com.android_map.androidmap.utils.SoapRequestProperties.Y_TWO;
+import static com.android_map.androidmap.utils.SoapResponseProperties.DETAILED_IMAGE;
+import static com.android_map.androidmap.utils.SoapResponseProperties.RESPONSE_MAP_NAME;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -29,7 +40,7 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
     private PixelCoordinates pixelCoordinates;
     private ImageView imageView;
     private ProgressDialog dialog;
-    private boolean isRegualarCoordinateFragment;
+    private boolean isRegularCoordinateFragment;
 
     public MapFragmentRequestTask(ImageView imageView, double latitude1, double longitude1, double latitude2, double longitude2, Activity activity) {
         this.imageView = imageView;
@@ -39,7 +50,7 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
         methodName = "GetDetailedMapByCoordinates";
         soapAction = "http://stm.eti.gda.pl/stm/IMapService/GetDetailedMapByCoordinates";
 
-        isRegualarCoordinateFragment = true;
+        isRegularCoordinateFragment = true;
     }
 
     public MapFragmentRequestTask(ImageView imageView, int latitude1, int longitude1, int latitude2, int longitude2, Activity activity) {
@@ -50,25 +61,14 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
         methodName = "GetDetailedMapByPixelLocation";
         soapAction = "http://stm.eti.gda.pl/stm/IMapService/GetDetailedMapByPixelLocation";
 
-        isRegualarCoordinateFragment = false;
+        isRegularCoordinateFragment = false;
     }
 
     @Override
     protected MapDetailResponse doInBackground(URL... params) {
         SoapObject request = new SoapObject(NAMESPACE, methodName);
 
-        request.addProperty("mapName", "radom");
-        if (isRegualarCoordinateFragment) {
-            request.addProperty("latitude1", regularCoordinates.getLatitude1());
-            request.addProperty("longitude1", regularCoordinates.getLongitude1());
-            request.addProperty("latitude2", regularCoordinates.getLatitude2());
-            request.addProperty("longitude2", regularCoordinates.getLongitude2());
-        } else {
-            request.addProperty("x1", pixelCoordinates.getLatitude1());
-            request.addProperty("y1", pixelCoordinates.getLongitude1());
-            request.addProperty("x2", pixelCoordinates.getLatitude2());
-            request.addProperty("y2", pixelCoordinates.getLongitude2());
-        }
+        assignProperties(request);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER10);
 
@@ -109,10 +109,26 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
         }
     }
 
+    private void assignProperties(SoapObject request) {
+        request.addProperty(REQUEST_MAP_NAME, "radom");
+
+        if (isRegularCoordinateFragment) {
+            request.addProperty(LATITUDE_ONE, regularCoordinates.getLatitude1());
+            request.addProperty(LONGITUDE_ONE, regularCoordinates.getLongitude1());
+            request.addProperty(LATITUDE_TWO, regularCoordinates.getLatitude2());
+            request.addProperty(LONGITUDE_TWO, regularCoordinates.getLongitude2());
+        } else {
+            request.addProperty(X_ONE, pixelCoordinates.getLatitude1());
+            request.addProperty(Y_ONE, pixelCoordinates.getLongitude1());
+            request.addProperty(X_TWO, pixelCoordinates.getLatitude2());
+            request.addProperty(Y_TWO, pixelCoordinates.getLongitude2());
+        }
+    }
+
     private MapDetailResponse parseResponse(SoapObject soapObject) {
         return new MapDetailResponse(
-                soapObject.getProperty("MapName").toString(),
-                soapObject.getProperty("DetailedImage").toString()
+                soapObject.getProperty(RESPONSE_MAP_NAME).toString(),
+                soapObject.getProperty(DETAILED_IMAGE).toString()
         );
     }
 }
