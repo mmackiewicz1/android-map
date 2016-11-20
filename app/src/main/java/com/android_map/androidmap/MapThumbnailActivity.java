@@ -1,11 +1,19 @@
 package com.android_map.androidmap;
 
+import static com.android_map.androidmap.utils.SoapRequestProperties.LATITUDE_ONE;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LATITUDE_TWO;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LONGITUDE_ONE;
+import static com.android_map.androidmap.utils.SoapRequestProperties.LONGITUDE_TWO;
+import static com.android_map.androidmap.utils.SoapRequestProperties.MAP_IMAGE_HEIGHT;
+import static com.android_map.androidmap.utils.SoapRequestProperties.MAP_IMAGE_WIDTH;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.android_map.androidmap.models.MapImageView;
 import com.android_map.androidmap.tasks.MapThumbnailRequestTask;
@@ -13,10 +21,6 @@ import com.android_map.androidmap.tasks.MapThumbnailRequestTask;
 import java.util.concurrent.ExecutionException;
 
 public class MapThumbnailActivity extends AppCompatActivity {
-    private static final String LATITUDE_1 = "latitude1";
-    private static final String LONGITUDE_1 = "longitude1";
-    private static final String LATITUDE_2 = "latitude2";
-    private static final String LONGITUDE_2 = "longitude2";
     private static final String COORDINATES_PRESENT = "coordinatesPresent";
 
     private MapImageView mapImageView;
@@ -36,8 +40,10 @@ public class MapThumbnailActivity extends AppCompatActivity {
 
     private void downloadMapThumbnail() throws ExecutionException, InterruptedException {
         mapImageView = (MapImageView) findViewById(R.id.thumbnailView);
-        MapThumbnailRequestTask mapThumbnailRequestTask = new MapThumbnailRequestTask(mapImageView, this);
-        mapThumbnailRequestTask.execute();
+        mapImageView.setAdjustViewBounds(true);
+        mapImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        new MapThumbnailRequestTask(mapImageView, this).execute();
     }
 
     public void displayMapFragmentByPixelLocation(int latitude1, int longitude1, int latitude2, int longitude2) {
@@ -55,11 +61,13 @@ public class MapThumbnailActivity extends AppCompatActivity {
             longitude2 = temp;
         }
 
-        intent.putExtra(LATITUDE_1, latitude1);
-        intent.putExtra(LONGITUDE_1, longitude1);
-        intent.putExtra(LATITUDE_2, latitude2);
-        intent.putExtra(LONGITUDE_2, longitude2);
+        intent.putExtra(LATITUDE_ONE, latitude1);
+        intent.putExtra(LONGITUDE_ONE, longitude1);
+        intent.putExtra(LATITUDE_TWO, latitude2);
+        intent.putExtra(LONGITUDE_TWO, longitude2);
         intent.putExtra(COORDINATES_PRESENT, false);
+        intent.putExtra(MAP_IMAGE_WIDTH, mapImageView.getWidth());
+        intent.putExtra(MAP_IMAGE_HEIGHT, mapImageView.getHeight());
 
         startActivity(intent);
     }

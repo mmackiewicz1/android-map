@@ -12,4 +12,7 @@ public interface SoapRequestProperties {
     String Y_ONE = "y1";
     String X_TWO = "x2";
     String Y_TWO = "y2";
+
+    String MAP_IMAGE_WIDTH = "mapImageWidth";
+    String MAP_IMAGE_HEIGHT = "mapImageHeight";
 }

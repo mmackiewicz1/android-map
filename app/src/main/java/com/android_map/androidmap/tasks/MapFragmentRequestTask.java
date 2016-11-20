@@ -106,6 +106,8 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
         if (result != null) {
             byte[] decodedString = Base64.decode(result.getDetailedImage(), Base64.DEFAULT);
             imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
     }
 
@@ -118,9 +120,9 @@ public class MapFragmentRequestTask extends AsyncTask<java.net.URL, Integer, Map
             request.addProperty(LATITUDE_TWO, regularCoordinates.getLatitude2());
             request.addProperty(LONGITUDE_TWO, regularCoordinates.getLongitude2());
         } else {
-            request.addProperty(X_ONE, pixelCoordinates.getLatitude1());
+            request.addProperty(X_ONE, pixelCoordinates.getLatitude2());
             request.addProperty(Y_ONE, pixelCoordinates.getLongitude1());
-            request.addProperty(X_TWO, pixelCoordinates.getLatitude2());
+            request.addProperty(X_TWO, pixelCoordinates.getLatitude1());
             request.addProperty(Y_TWO, pixelCoordinates.getLongitude2());
         }
     }
